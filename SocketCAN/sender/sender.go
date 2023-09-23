@@ -3,6 +3,7 @@ package sender
 import (
 	"context"
 
+	CANBMScan "github.com/macformula/sandbox_projects/output/CANBMScan"
 	"go.einride.tech/can"
 	"go.einride.tech/can/pkg/socketcan"
 )
@@ -10,22 +11,31 @@ import (
 func Send() {
 	// auxMsg := etruckcan.NewAuxiliary().SetHeadLights(etruckcan.Auxiliary_HeadLights_LowBeam)
 	// frame := auxMsg.Frame()
-	conn, _ := socketcan.DialContext(context.Background(), "can", "can0")
 
-	var data *can.Data
-	data.SetBit(0, true)
-	data.SetBit(1, true)
-	data.SetBit(2, true)
-	data.SetBit(3, true)
-	data.SetBit(4, true)
-	data.SetBit(5, true)
-	data.SetBit(6, true)
-	data.SetBit(7, true)
+	conn, err := socketcan.DialContext(context.Background(), "can", "can0")
+	if err != nil {
+		panic(err)
+	}
+
+	packMsg1 := CANBMScan.NewContactor_Feedback().SetPack_Negative_Feedback(true)
+	frame1 := packMsg1.Frame()
+	packMsg2 := CANBMScan.NewContactor_Feedback().SetPack_Negative_Feedback(false)
+	frame2 := packMsg2.Frame()
+	// Gives me the signal: CANBMScan.NewContactor_Feedback().Pack_Negative_Feedback()
+
 	frame := can.Frame{
-		ID:     456,
-		Length: 1,
-		Data:   *data,
+		ID:     0x123,
+		Length: 8,
+		Data:   can.Data{'h', 'i', ' ', 'w', 'o', 'r', 'l', 'd'},
 	}
 	tx := socketcan.NewTransmitter(conn)
-	_ = tx.TransmitFrame(context.Background(), frame)
+	if err := tx.TransmitFrame(context.Background(), frame); err != nil {
+		panic(err)
+	}
+	if err := tx.TransmitFrame(context.Background(), frame1); err != nil {
+		panic(err)
+	}
+	if err := tx.TransmitFrame(context.Background(), frame2); err != nil {
+		panic(err)
+	}
 }

@@ -19,6 +19,7 @@ func Receive() {
 	AMK1_SetPoints1 := CANAMKInvertercan.NewAMK1_SetPoints1()
 	AMK1_ActualValues2 := CANAMKInvertercan.NewAMK1_ActualValues2()
 	Pack_SOC := CANBMScan.NewPack_SOC()
+	Pack_State := CANBMScan.NewPack_State()
 	
 	rx := socketcan.NewReceiver(conn)
 	for rx.Receive() {
@@ -57,6 +58,15 @@ func Receive() {
 			fmt.Printf("\t\tAMK_TempInverter: %0.2f\n", AMK1_ActualValues2.AMK_TempInverter())
 			fmt.Printf("\t\tAMK_TempIGBT: %0.2f\n", AMK1_ActualValues2.AMK_TempIGBT())
 			fmt.Printf("\t\tAMK_ErrorInfo: %d\n", AMK1_ActualValues2.AMK_ErrorInfo())
+		case CANBMScan.Messages().Pack_State.ID:
+			if err := Pack_State.UnmarshalFrame(frame); err != nil {
+				panic(err)
+			}
+			fmt.Printf("\t%s\n", "Pack_State")
+			fmt.Printf("\t\tAMK_TempMotor: %0.2f\n", Pack_State.Pack_Current())
+			fmt.Printf("\t\tAMK_TempInverter: %0.2f\n", Pack_State.Pack_Inst_Voltage())
+			fmt.Printf("\t\tAMK_TempIGBT: %0.2f\n", Pack_State.Avg_Cell_Voltage())
+			fmt.Printf("\t\tAMK_ErrorInfo: %d\n", Pack_State.Populated_Cells())
 		default:
 			fmt.Print(frame.ID)
 		}

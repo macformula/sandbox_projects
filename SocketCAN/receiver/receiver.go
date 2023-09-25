@@ -47,6 +47,8 @@ func Receive() {
 			fmt.Printf("\t\t%t\n", AMK1_SetPoints1.AMK_bEnable())
 			fmt.Printf("\t\t%t\n", AMK1_SetPoints1.AMK_bDcOn())
 			fmt.Printf("\t\t%t\n", AMK1_SetPoints1.AMK_bInverterOn())
+		default:
+			fmt.Print(frame.ID)
 		}
 	}
 	if rx.Err() != nil {

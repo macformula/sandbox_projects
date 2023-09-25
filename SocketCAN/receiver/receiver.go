@@ -17,6 +17,7 @@ func Receive() {
 
 	// Messages
 	AMK1_SetPoints1 := CANAMKInvertercan.NewAMK1_SetPoints1()
+	AMK1_ActualValues2 := CANAMKInvertercan.NewAMK1_ActualValues2()
 	Pack_SOC := CANBMScan.NewPack_SOC()
 	
 	rx := socketcan.NewReceiver(conn)
@@ -47,6 +48,15 @@ func Receive() {
 			fmt.Printf("\t\t%t\n", AMK1_SetPoints1.AMK_bEnable())
 			fmt.Printf("\t\t%t\n", AMK1_SetPoints1.AMK_bDcOn())
 			fmt.Printf("\t\t%t\n", AMK1_SetPoints1.AMK_bInverterOn())
+		case CANAMKInvertercan.Messages().AMK1_ActualValues2.ID:
+			if err := AMK1_ActualValues2.UnmarshalFrame(frame); err != nil {
+				panic(err)
+			}
+			fmt.Printf("\t%s\n", "AMK1_ActualValues2")
+			fmt.Printf("\t\tAMK_TempMotor: %0.2f\n", AMK1_ActualValues2.AMK_TempMotor())
+			fmt.Printf("\t\tAMK_TempInverter: %0.2f\n", AMK1_ActualValues2.AMK_TempInverter())
+			fmt.Printf("\t\tAMK_TempIGBT: %0.2f\n", AMK1_ActualValues2.AMK_TempIGBT())
+			fmt.Printf("\t\tAMK_ErrorInfo: %d\n", AMK1_ActualValues2.AMK_ErrorInfo())
 		default:
 			fmt.Print(frame.ID)
 		}

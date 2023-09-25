@@ -3,7 +3,7 @@ package sender
 import (
 	"context"
 
-	CANBMScan "github.com/macformula/sandbox_projects/output/CANBMScan"
+	// CANBMScan "github.com/macformula/sandbox_projects/output/CANBMScan"
 	"go.einride.tech/can"
 	"go.einride.tech/can/pkg/socketcan"
 )

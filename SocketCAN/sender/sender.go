@@ -17,25 +17,25 @@ func Send() {
 		panic(err)
 	}
 
-	packMsg1 := CANBMScan.NewContactor_Feedback().SetPack_Negative_Feedback(true)
-	frame1 := packMsg1.Frame()
-	packMsg2 := CANBMScan.NewContactor_Feedback().SetPack_Negative_Feedback(false)
-	frame2 := packMsg2.Frame()
+	// packMsg1 := CANBMScan.NewContactor_Feedback().SetPack_Negative_Feedback(true)
+	// frame1 := packMsg1.Frame()
+	// packMsg2 := CANBMScan.NewContactor_Feedback().SetPack_Negative_Feedback(false)
+	// frame2 := packMsg2.Frame()
 	// Gives me the signal: CANBMScan.NewContactor_Feedback().Pack_Negative_Feedback()
 
 	frame := can.Frame{
 		ID:     0x123,
 		Length: 8,
-		Data:   can.Data{'h', 'i', ' ', 'w', 'o', 'r', 'l', 'd'},
+		Data:   can.Data{0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8},
 	}
 	tx := socketcan.NewTransmitter(conn)
 	if err := tx.TransmitFrame(context.Background(), frame); err != nil {
 		panic(err)
 	}
-	if err := tx.TransmitFrame(context.Background(), frame1); err != nil {
-		panic(err)
-	}
-	if err := tx.TransmitFrame(context.Background(), frame2); err != nil {
-		panic(err)
-	}
+	// if err := tx.TransmitFrame(context.Background(), frame1); err != nil {
+	// 	panic(err)
+	// }
+	// if err := tx.TransmitFrame(context.Background(), frame2); err != nil {
+	// 	panic(err)
+	// }
 }

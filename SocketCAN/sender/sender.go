@@ -24,9 +24,9 @@ func Send() {
 	// Gives me the signal: CANBMScan.NewContactor_Feedback().Pack_Negative_Feedback()
 
 	frame := can.Frame{
-		ID:     0x123,
-		Length: 8,
-		Data:   can.Data{0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8},
+		ID:     1572,
+		Length: 7,
+		Data:   can.Data{0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7},
 	}
 	tx := socketcan.NewTransmitter(conn)
 	if err := tx.TransmitFrame(context.Background(), frame); err != nil {

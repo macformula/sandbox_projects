@@ -8,7 +8,7 @@ GOOS="linux"
 # Set the output binary name
 OUTPUT_BINARY="testLibSpi1"  # Replace with your desired binary name
 
-cd ../
+cd ../cmd/
 
 # Run the Go build command
 GO111MODULE=on GOARCH="$GOARCH" GOARM="$GOARM" GOOS="$GOOS" go build -o "$OUTPUT_BINARY" .

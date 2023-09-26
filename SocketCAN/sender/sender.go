@@ -29,7 +29,7 @@ func Send() {
 	for i := 0; i <= 7; i++ {
 		// Create a new can.Frame for each iteration with the appropriate binary representation
 		frame := can.Frame{
-			ID:     1572,
+			ID:     1574,
 			Length: 1,
 			Data:   can.Data{byte(i)},
 		}

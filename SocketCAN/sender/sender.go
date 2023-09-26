@@ -23,15 +23,34 @@ func Send() {
 	// frame2 := packMsg2.Frame()
 	// Gives me the signal: CANBMScan.NewContactor_Feedback().Pack_Negative_Feedback()
 
-	frame := can.Frame{
-		ID:     1572,
-		Length: 7,
-		Data:   can.Data{0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7},
+
+	var frames []can.Frame
+
+	for i := 0; i <= 7; i++ {
+		// Create a new can.Frame for each iteration with the appropriate binary representation
+		frame := can.Frame{
+			ID:     1572,
+			Length: 1,
+			Data:   can.Data{byte(i)},
+		}
+		frames = append(frames, frame)
 	}
+
 	tx := socketcan.NewTransmitter(conn)
-	if err := tx.TransmitFrame(context.Background(), frame); err != nil {
-		panic(err)
+	// Print the frames to verify the result
+	for _, frame := range frames {
+		if err := tx.TransmitFrame(context.Background(), frame); err != nil {
+			panic(err)
+		}
 	}
+
+	// frame := can.Frame{
+	// 	ID:     1572,
+	// 	Length: 1,
+	// 	Data:   can.Data{0b111},
+	// }
+	
+	
 	// if err := tx.TransmitFrame(context.Background(), frame1); err != nil {
 	// 	panic(err)
 	// }

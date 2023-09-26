@@ -20,6 +20,7 @@ func Receive() {
 	AMK1_ActualValues2 := CANAMKInvertercan.NewAMK1_ActualValues2()
 	Pack_SOC := CANBMScan.NewPack_SOC()
 	Pack_State := CANBMScan.NewPack_State()
+	Contactor_Feedback := CANBMScan.NewContactor_Feedback()
 	
 	rx := socketcan.NewReceiver(conn)
 	for rx.Receive() {
@@ -63,10 +64,18 @@ func Receive() {
 				panic(err)
 			}
 			fmt.Printf("\t%s\n", "Pack_State")
-			fmt.Printf("\t\tAMK_TempMotor: %0.2f\n", Pack_State.Pack_Current())
-			fmt.Printf("\t\tAMK_TempInverter: %0.2f\n", Pack_State.Pack_Inst_Voltage())
-			fmt.Printf("\t\tAMK_TempIGBT: %0.2f\n", Pack_State.Avg_Cell_Voltage())
-			fmt.Printf("\t\tAMK_ErrorInfo: %d\n", Pack_State.Populated_Cells())
+			fmt.Printf("\t\tPack_Current: %0.2f\n", Pack_State.Pack_Current())
+			fmt.Printf("\t\tPack_Inst_Voltage: %0.2f\n", Pack_State.Pack_Inst_Voltage())
+			fmt.Printf("\t\tAvg_Cell_Voltage: %0.2f\n", Pack_State.Avg_Cell_Voltage())
+			fmt.Printf("\t\tPopulated_Cells: %d\n", Pack_State.Populated_Cells())
+		case CANBMScan.Messages().Contactor_Feedback.ID:
+			if err := Contactor_Feedback.UnmarshalFrame(frame); err != nil {
+				panic(err)
+			}
+			fmt.Printf("\t%s\n", "Contactor_Feedback")
+			fmt.Printf("\t\tPack_Precharge_Feedback: %t\n", Contactor_Feedback.Pack_Precharge_Feedback())
+			fmt.Printf("\t\tPack_Negative_Feedback: %t\n", Contactor_Feedback.Pack_Negative_Feedback())
+			fmt.Printf("\t\tPack_Positive_Feedback: %t\n", Contactor_Feedback.Pack_Positive_Feedback())
 		default:
 			fmt.Print(frame.ID)
 		}

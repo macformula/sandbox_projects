@@ -26,7 +26,7 @@ func Trace() {
 	rx := socketcan.NewReceiver(conn)
 	for rx.Receive() {
 		frame := rx.Frame()
-		result := fmt.Sprintf("%d,%d,%s", frame.ID, frame.Length, frame.Data)
+		result := fmt.Sprintf("%d,%d,%d", frame.ID, frame.Length, frame.Data)
 
 		log.Println(result)
 		fmt.Println(result)

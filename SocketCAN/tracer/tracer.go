@@ -27,8 +27,8 @@ func Trace() {
 	for rx.Receive() {
 		frame := rx.Frame()
 
-		log.Println(frame)
-		fmt.Println(frame.String())
+		log.Println(frame.ID, ",", frame.Length, ",", frame.Data)
+		fmt.Println(frame.ID, ",", frame.Length, ",", frame.Data)
 	}
 
 	if rx.Err() != nil {

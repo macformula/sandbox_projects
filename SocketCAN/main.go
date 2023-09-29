@@ -6,13 +6,14 @@ import (
 
 	"github.com/macformula/sandbox_projects/receiver"
 	"github.com/macformula/sandbox_projects/sender"
+	"github.com/macformula/sandbox_projects/tracer"
 	"go.einride.tech/can/pkg/candevice"
 )
 
 // Call with arg either "receiver" or "sender"
 func main() {
 	if len(os.Args) < 2 {
-		fmt.Println("Please input 'sender' or 'receiver'")
+		fmt.Println("Please input 'sender', 'receiver' or 'tracer'")
 		return
 	}
 
@@ -24,8 +25,11 @@ func main() {
 	case "receiver":
 		setup()
 		receiver.Receive()
+	case "tracer":
+		setup()
+		tracer.Trace()
 	default:
-		fmt.Println("Invalid input. Please input 'sender' or 'receiver'")
+		fmt.Println("Invalid input. Please input 'sender', 'receiver' or 'tracer'")
 	}
 }
 

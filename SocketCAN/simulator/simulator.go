@@ -4,7 +4,6 @@ import (
 	"context"
 	"log"
 	"os"
-	"fmt"
 
 	"go.einride.tech/can/pkg/socketcan"
 )
@@ -28,7 +27,6 @@ func Trace() {
 		frame := rx.Frame()
 
 		log.Println(frame.String())
-		fmt.Println(frame.String())
 	}
 
 	if rx.Err() != nil {

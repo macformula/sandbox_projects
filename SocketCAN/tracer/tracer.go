@@ -9,7 +9,14 @@ import (
 )
 
 func Trace() {
-	setupFile()
+	file, err := os.OpenFile("can.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err != nil {
+		log.Fatal("Failed to open log file: ", err)
+	}
+	defer file.Close()
+
+	log.SetOutput(file) // Set the log output to the file
+
 	conn, err := socketcan.DialContext(context.Background(), "can", "can0")
 	if err != nil {
 			panic(err)
@@ -27,12 +34,12 @@ func Trace() {
 	}
 }
 
-func setupFile() {
-	file, err := os.OpenFile("logfile.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
-	if err != nil {
-		log.Fatal("Failed to open log file: ", err)
-	}
-	defer file.Close()
+// func setupFile() {
+// 	file, err := os.OpenFile("can.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+// 	if err != nil {
+// 		log.Fatal("Failed to open log file: ", err)
+// 	}
+// 	defer file.Close()
 
-	log.SetOutput(file) // Set the log output to the file
-}
+// 	log.SetOutput(file) // Set the log output to the file
+// }

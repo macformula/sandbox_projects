@@ -15,7 +15,7 @@ func Trace() {
 		log.Fatal("Failed to open log file: ", err)
 	}
 	defer file.Close()
-
+	log.SetFlags(0)
 	log.SetOutput(file) // Set the log output to the file
 
 	conn, err := socketcan.DialContext(context.Background(), "can", "can0")

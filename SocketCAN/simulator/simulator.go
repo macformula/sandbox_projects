@@ -43,6 +43,8 @@ func parseCANFrameInfo(str string) (can.Frame, error) {
 	dataStr = strings.TrimSuffix(dataStr, "]")
 	dataBytes := strings.Split(dataStr, " ")
 	for i, byteStr := range dataBytes {
+		if uint8(i) == length {break}
+
 		byteVal, err := strconv.ParseUint(byteStr, 10, 8)
 		if err != nil {
 			return frame, fmt.Errorf("failed to parse data byte: %v", err)

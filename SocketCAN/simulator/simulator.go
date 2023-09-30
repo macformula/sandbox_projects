@@ -92,6 +92,7 @@ func Simulate() {
 	
 		if err := tx.TransmitFrame(context.Background(), frame); err != nil {
 			fmt.Printf("here3: %v\n", err)
+			fmt.Println(frame)
 			panic(err)
 		}
 	}

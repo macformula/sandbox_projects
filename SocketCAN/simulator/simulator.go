@@ -74,6 +74,7 @@ func Simulate() {
 
 	conn, err := socketcan.DialContext(context.Background(), "can", "can0")
 	if err != nil {
+		fmt.Printf("here1: %v\n", err)
 		panic(err)
 	}
 	tx := socketcan.NewTransmitter(conn)
@@ -82,10 +83,13 @@ func Simulate() {
 		line := scanner.Text()
 		frame, err := parseCANFrameInfo(line)
 		if err != nil {
+			fmt.Printf("here2: %v\n", err)
+			fmt.Println(frame)
 			panic(err)
 		}
 	
 		if err := tx.TransmitFrame(context.Background(), frame); err != nil {
+			fmt.Printf("here3: %v\n", err)
 			panic(err)
 		}
 	}

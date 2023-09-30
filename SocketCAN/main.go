@@ -7,6 +7,7 @@ import (
 	"github.com/macformula/sandbox_projects/receiver"
 	"github.com/macformula/sandbox_projects/sender"
 	"github.com/macformula/sandbox_projects/tracer"
+	"github.com/macformula/sandbox_projects/simulator"
 	"go.einride.tech/can/pkg/candevice"
 )
 
@@ -28,6 +29,9 @@ func main() {
 	case "tracer":
 		setup()
 		tracer.Trace()
+	case "simulator":
+		setup()
+		simulator.Simulate()
 	default:
 		fmt.Println("Invalid input. Please input 'sender', 'receiver' or 'tracer'")
 	}

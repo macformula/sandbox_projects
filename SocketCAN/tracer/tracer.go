@@ -10,7 +10,7 @@ import (
 )
 
 func Trace() {
-	file, err := os.OpenFile("can.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	file, err := os.OpenFile("can.log", os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0666) // O_APPEND
 	if err != nil {
 		log.Fatal("Failed to open log file: ", err)
 	}

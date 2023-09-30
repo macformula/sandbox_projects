@@ -50,10 +50,13 @@ func parseCANFrameInfo(str string) (can.Frame, error) {
 		bytes[i] = byte(byteVal)
 	}
 
+	data := can.Data{} // Initialize a can.Data array
+	copy(data[:], bytes)
+
 	return can.Frame{
 		ID:     id,
 		Length: length,
-		Data:   can.Data(bytes),
+		Data:   data,
 	}, nil
 }
 

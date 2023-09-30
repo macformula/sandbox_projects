@@ -7,7 +7,7 @@ import (
 	"bufio"
 	"strconv"
 	"strings"
-	"time"
+	// "time"
 
 	"go.einride.tech/can"
 	"go.einride.tech/can/pkg/socketcan"

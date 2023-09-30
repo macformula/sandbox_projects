@@ -16,7 +16,6 @@ func parseCANFrameInfo(str string) (can.Frame, error) {
 	var frame can.Frame
 	var id uint32
 	var length uint8
-	bytes := make([]byte, length)
 
 	parts := strings.Split(str, ",")
 	if len(parts) != 3 {
@@ -36,6 +35,7 @@ func parseCANFrameInfo(str string) (can.Frame, error) {
 		return frame, fmt.Errorf("failed to parse length: %v", err)
 	}
 	length = uint8(tempLength)
+	bytes := make([]byte, length)
 
 	// Parse data
 	dataStr := strings.TrimSpace(parts[2])

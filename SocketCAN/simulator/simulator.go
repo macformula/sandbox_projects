@@ -7,6 +7,7 @@ import (
 	"bufio"
 	"strconv"
 	"strings"
+	"time"
 
 	"go.einride.tech/can"
 	"go.einride.tech/can/pkg/socketcan"
@@ -95,6 +96,7 @@ func Simulate() {
 			fmt.Println(frame)
 			panic(err)
 		}
+		time.Sleep(time.Duration(100) * time.Millisecond)
 	}
 
 	// Check for any scanning errors

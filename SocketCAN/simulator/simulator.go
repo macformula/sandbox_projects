@@ -96,7 +96,7 @@ func Simulate() {
 			fmt.Println(frame)
 			panic(err)
 		}
-		time.Sleep(time.Duration(100) * time.Millisecond)
+		// time.Sleep(time.Duration(100) * time.Millisecond)
 	}
 
 	// Check for any scanning errors

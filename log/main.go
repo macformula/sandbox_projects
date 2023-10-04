@@ -1,28 +1,26 @@
 package main
 
 import (
-    "encoding/json"
-    "os"
+	"context"
+	"encoding/json"
+	"fmt"
+	"os"
 
-    "go.uber.org/zap"
-    "go.uber.org/zap/zapcore"
+	"go.uber.org/zap"
+
+	"can/logger/cantracer"
+	"time"
+
+	"go.uber.org/zap/zapcore"
 )
 
-func main2() {
-    // The zap.Config struct includes an AtomicLevel. To use it, keep a
-	// reference to the Config.
-	// rawJSON := []byte(`{
-	// 	"level": "debug",
-	// 	"outputPaths": ["stdout"],
-	// 	"errorOutputPaths": ["stderr"],
-	// 	"encoding": "json",
-	// 	"encoderConfig": {
-	// 		"messageKey": "message",
-	// 		"levelKey": "level",
-	// 		"levelEncoder": "lowercase"
-	// 	}
-	// }`)
+const (
+	_tracerPeriod = 1 * time.Millisecond
+	_sleepTime    = 5 * time.Second
+)
 
+func main() {
+	fmt.Print("starting program")
 	rawJSON, err := os.ReadFile("config.json")
 	if err != nil {
 			panic(err)
@@ -39,22 +37,78 @@ func main2() {
     
     // cfg.OutputPaths = []string{"app.log"}
 	logger := zap.Must(cfg.Build())
-  logger = logger.Named("can_tracer")
-    
-	defer logger.Sync()
+  // logger = logger.Named("can_tracer")
 
-    // Append custom fields to the log
-	canData := map[string]int{
-		"speed": 60,
-		"fuel":  70,
+	t := cantracer.NewTracer(_tracerPeriod, logger, "can0")
+
+	// ctx, cancel := context.WithTimeout(context.Background(), 5*time.Millisecond)
+	// defer cancel()
+	ctx := context.Background()
+
+	// Start tracing
+	err = t.StartTrace(ctx)
+	if err != nil {
+		panic(err)
 	}
-	logger.Info("info logging disabled", zap.Any("canData", canData))
 
-	// logger.Info("info logging disabled", canData: "hi")
+	// Do other stuff here
+	time.Sleep(_sleepTime)
 
-	cfg.Level.SetLevel(zap.DebugLevel)
-	logger.Info("info logging enabled")
+	// Stop tracing
+	t.StopTrace()
 
-    cfg.Level.SetLevel(zap.ErrorLevel)
-	logger.Info("info logging disabled")
+	// Add delay to see all logs
+	time.Sleep(1 * time.Second)
 }
+
+
+// func main2() {
+// 	// The zap.Config struct includes an AtomicLevel. To use it, keep a
+// // reference to the Config.
+// // rawJSON := []byte(`{
+// // 	"level": "debug",
+// // 	"outputPaths": ["stdout"],
+// // 	"errorOutputPaths": ["stderr"],
+// // 	"encoding": "json",
+// // 	"encoderConfig": {
+// // 		"messageKey": "message",
+// // 		"levelKey": "level",
+// // 		"levelEncoder": "lowercase"
+// // 	}
+// // }`)
+
+// rawJSON, err := os.ReadFile("config.json")
+// if err != nil {
+// 		panic(err)
+// }
+// var cfg zap.Config
+// if err := json.Unmarshal(rawJSON, &cfg); err != nil {
+// 	panic(err)
+// }
+
+// cfg.EncoderConfig.EncodeLevel = zapcore.LowercaseLevelEncoder
+// cfg.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
+// cfg.EncoderConfig.EncodeDuration = zapcore.SecondsDurationEncoder
+// cfg.EncoderConfig.EncodeCaller = zapcore.FullCallerEncoder
+	
+// 	// cfg.OutputPaths = []string{"app.log"}
+// logger := zap.Must(cfg.Build())
+// logger = logger.Named("can_tracer")
+	
+// defer logger.Sync()
+
+// 	// Append custom fields to the log
+// canData := map[string]int{
+// 	"speed": 60,
+// 	"fuel":  70,
+// }
+// logger.Info("info logging disabled", zap.Any("canData", canData))
+
+// // logger.Info("info logging disabled", canData: "hi")
+
+// cfg.Level.SetLevel(zap.DebugLevel)
+// logger.Info("info logging enabled")
+
+// 	cfg.Level.SetLevel(zap.ErrorLevel)
+// logger.Info("info logging disabled")
+// }

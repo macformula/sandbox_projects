@@ -8,7 +8,7 @@ import (
     "go.uber.org/zap/zapcore"
 )
 
-func main() {
+func main2() {
     // The zap.Config struct includes an AtomicLevel. To use it, keep a
 	// reference to the Config.
 	// rawJSON := []byte(`{
@@ -23,23 +23,23 @@ func main() {
 	// 	}
 	// }`)
 
-    rawJSON, err := os.ReadFile("config.json")
-    if err != nil {
-        panic(err)
-    }
+	rawJSON, err := os.ReadFile("config.json")
+	if err != nil {
+			panic(err)
+	}
 	var cfg zap.Config
 	if err := json.Unmarshal(rawJSON, &cfg); err != nil {
 		panic(err)
 	}
 
-    cfg.EncoderConfig.EncodeLevel = zapcore.LowercaseLevelEncoder
+  cfg.EncoderConfig.EncodeLevel = zapcore.LowercaseLevelEncoder
 	cfg.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
 	cfg.EncoderConfig.EncodeDuration = zapcore.SecondsDurationEncoder
 	cfg.EncoderConfig.EncodeCaller = zapcore.FullCallerEncoder
     
     // cfg.OutputPaths = []string{"app.log"}
 	logger := zap.Must(cfg.Build())
-    logger = logger.Named("can_tracer")
+  logger = logger.Named("can_tracer")
     
 	defer logger.Sync()
 

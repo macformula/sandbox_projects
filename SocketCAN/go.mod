@@ -1,6 +1,6 @@
 module github.com/macformula/sandbox_projects
 
-go 1.23
+go 1.21.1
 
 require (
 	github.com/alecthomas/kingpin/v2 v2.3.2 // indirect

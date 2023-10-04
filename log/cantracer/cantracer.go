@@ -54,6 +54,7 @@ func NewTracer(samplePeriod time.Duration, l *zap.Logger, canInterface string) *
 func (t *Tracer) StartTrace(ctx context.Context) error {
 	// Setup code here.
 	t.can, _ = NewCanData(t.canInterface)
+	t.l.Info("received start command, beginning trace")
 
 	t.stop = make(chan struct{})
 	go t.trace(ctx)

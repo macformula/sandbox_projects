@@ -4,6 +4,10 @@ go 1.21.1
 
 require (
 	github.com/golang/mock v1.6.0 // indirect
+	github.com/google/go-cmp v0.5.9 // indirect
+	github.com/josharian/native v1.1.0 // indirect
+	github.com/mdlayher/netlink v1.7.2 // indirect
+	github.com/mdlayher/socket v0.4.1 // indirect
 	go.einride.tech/can v0.7.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.26.0 // indirect

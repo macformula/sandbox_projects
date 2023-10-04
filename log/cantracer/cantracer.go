@@ -74,7 +74,7 @@ func (t *Tracer) trace(ctx context.Context) {
 	ticker := time.NewTicker(t.samplePeriod)
 	defer ticker.Stop()
 
-	i := 0 // just for printing, remove me
+	i := 1 // just for printing, remove me
 	for t.can.rx.Receive() {
 		frame := t.can.rx.Frame()
 

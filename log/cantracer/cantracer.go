@@ -74,7 +74,7 @@ func (t *Tracer) trace(ctx context.Context) {
 	ticker := time.NewTicker(t.samplePeriod)
 	defer ticker.Stop()
 
-	// i := 0 // just for printing, remove me
+	i := 0 // just for printing, remove me
 	for t.can.rx.Receive() {
 		frame := t.can.rx.Frame()
 
@@ -93,6 +93,7 @@ func (t *Tracer) trace(ctx context.Context) {
 		// t.l.Info("Tracing", zap.Int("i", i))
 		t.l.Info("200", zap.Any("can_id", frame.ID), zap.Any("can_length", frame.Length), zap.Any("can_data", frame.Data))
 
-		// i += 1
+		t.l.Info("at i="+i)
+		i += 1
 	}
 }

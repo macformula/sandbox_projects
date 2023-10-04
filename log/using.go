@@ -16,7 +16,7 @@ import (
 
 const (
 	_tracerPeriod = 1 * time.Millisecond
-	_sleepTime    = 3 * time.Second
+	_sleepTime    = 5 * time.Second
 )
 
 func main() {

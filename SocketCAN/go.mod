@@ -17,6 +17,8 @@ require (
 	github.com/shurcooL/go-goon v0.0.0-20170922171312-37c2f522c041 // indirect
 	github.com/xhit/go-str2duration/v2 v2.1.0 // indirect
 	go.einride.tech/can v0.5.5 // indirect
+	go.uber.org/multierr v1.10.0 // indirect
+	go.uber.org/zap v1.26.0 // indirect
 	golang.org/x/mod v0.9.0 // indirect
 	golang.org/x/net v0.8.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect

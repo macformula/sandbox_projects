@@ -20,7 +20,7 @@ const (
 )
 
 func main() {
-	fmt.Print("starting program")
+	fmt.Println("Starting program")
 	rawJSON, err := os.ReadFile("config.json")
 	if err != nil {
 			panic(err)

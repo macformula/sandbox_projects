@@ -91,9 +91,8 @@ func (t *Tracer) trace(ctx context.Context) {
 		// tracer logic here
 
 		// t.l.Info("Tracing", zap.Int("i", i))
-		t.l.Info("200", zap.Any("can_id", frame.ID), zap.Any("can_length", frame.Length), zap.Any("can_data", frame.Data))
+		t.l.Info("200", zap.Any("can_id", frame.ID), zap.Any("can_length", frame.Length), zap.Any("can_data", frame.Data), zap.Intp("step", &i))
 
-		t.l.Info("at i="+string(i))
 		i += 1
 	}
 }

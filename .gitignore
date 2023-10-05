@@ -16,6 +16,7 @@ local.properties
 .settings
 [Rr]elease
 [Dd]ebug
+.idea
 
 # External tool builders
 .externalToolBuilders/

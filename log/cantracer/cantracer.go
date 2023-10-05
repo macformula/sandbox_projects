@@ -2,16 +2,16 @@ package cantracer
 
 import (
 	"context"
-	"time"
 	"fmt"
+	"time"
 
-	"go.einride.tech/can/pkg/socketcan"
 	"go.einride.tech/can/pkg/candevice"
+	"go.einride.tech/can/pkg/socketcan"
 	"go.uber.org/zap"
 )
 
 type CanData struct {
-	rx					*socketcan.Receiver
+	rx *socketcan.Receiver
 }
 
 func NewCanData(canInterface string) (*CanData, error) {
@@ -27,20 +27,20 @@ func NewCanData(canInterface string) (*CanData, error) {
 }
 
 func setup(canInterface string) {
-	fmt.Println("Setting up "+canInterface)
+	fmt.Println("Setting up " + canInterface)
 	d, _ := candevice.New(canInterface)
 	_ = d.SetBitrate(250000)
 	_ = d.SetUp()
 	defer d.SetDown()
-	fmt.Println("Done "+canInterface+" setup")
+	fmt.Println("Done " + canInterface + " setup")
 }
 
 type Tracer struct {
-	l            	*zap.Logger
-	canInterface 	string
-	stop       	 	chan struct{}
-	samplePeriod	time.Duration
-	can						*CanData
+	l            *zap.Logger
+	canInterface string
+	stop         chan struct{}
+	samplePeriod time.Duration
+	can          *CanData
 }
 
 func NewTracer(samplePeriod time.Duration, l *zap.Logger, canInterface string) *Tracer {

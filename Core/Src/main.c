@@ -1,20 +1,20 @@
 /* USER CODE BEGIN Header */
 /**
-  ******************************************************************************
-  * @file           : main.c
-  * @brief          : Main program body
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2023 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * @file           : main.c
+ * @brief          : Main program body
+ ******************************************************************************
+ * @attention
+ *
+ * Copyright (c) 2023 STMicroelectronics.
+ * All rights reserved.
+ *
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
+ *
+ ******************************************************************************
+ */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
@@ -42,7 +42,20 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-uint8_t shouldToggleLED = 0;
+enum Mode {
+	MODE1, MODE2, MODE3, MODE4
+};
+enum Mode currentMode = MODE1;
+
+struct LEDStates {
+	uint16_t BRB_LED_State;
+	uint16_t LD1_State;
+	uint16_t LD2_State;
+	uint16_t LD3_State;
+};
+struct LEDStates pinStates = {0,0,0,0};
+
+uint32_t mode3Timer = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -54,8 +67,50 @@ static void MX_GPIO_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
-	shouldToggleLED = 1;
+void Set_LED_States(uint16_t BRB_LED_State, uint16_t LD1_State, uint16_t LD2_State, uint16_t LD3_State){
+	if (BRB_LED_State != pinStates.BRB_LED_State){ // toggle if target and current are not equal
+		HAL_GPIO_TogglePin(BRB_LED_GPIO_Port, BRB_LED_Pin);
+		pinStates.BRB_LED_State = !pinStates.BRB_LED_State; //reflect change in data to keep track
+	}
+	if (LD1_State != pinStates.LD1_State){
+		HAL_GPIO_TogglePin(LD1_GPIO_Port, LD1_Pin);
+		pinStates.LD1_State = !pinStates.LD1_State;
+	}
+	if (LD2_State != pinStates.LD2_State){
+		HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+		pinStates.LD2_State = !pinStates.LD2_State;
+	}
+	if (LD3_State != pinStates.LD3_State){
+		HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
+		pinStates.LD3_State = !pinStates.LD3_State;
+	}
+}
+
+void Initialize_Mode(){
+	//Initialization code for each mode (only runs once during mode switch)
+	switch (currentMode){
+	case MODE1:
+		Set_LED_States(1, 0, 0, 0);
+		break;
+	case MODE2:
+		Set_LED_States(0, 1, 1, 1);
+		break;
+	case MODE3:
+		mode3Timer = 0;
+	case MODE4:
+	default:
+		Set_LED_States(0, 0, 0, 0);
+		break;
+	}
+}
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
+	currentMode += 1; //Switch to next mode
+	if (currentMode >= 4){
+		currentMode = MODE1; //keep within mode bounds
+	}
+
+	Initialize_Mode(); //Initialize routine for each mode
 }
 /* USER CODE END 0 */
 
@@ -93,23 +148,24 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
-	  //PART 1 of tutorial
-	  HAL_GPIO_TogglePin(LED_ON_GPIO_Port, LED_ON_Pin);
-	  HAL_GPIO_TogglePin(LD1_GPIO_Port, LD1_Pin);
-
-	  HAL_Delay(500);
-
-	  //PART 2
-	  if (shouldToggleLED){
-		  HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
-		  shouldToggleLED = 0;
-	  }
+	Initialize_Mode();
+	while (1) {
+		if (currentMode == MODE3) {
+			mode3Timer += 1; //Increment timer in intervals of 100ms
+			HAL_Delay(100);
+			if (mode3Timer % 20 == 0) { //Every 2 seconds
+				HAL_GPIO_TogglePin(LD1_GPIO_Port, LD1_Pin);
+				pinStates.LD1_State = !pinStates.LD1_State;
+			}
+			if (mode3Timer % 10 == 0){ //Every 1 second
+				HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
+				pinStates.LD3_State = !pinStates.LD3_State;
+			}
+		}
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-  }
+	}
   /* USER CODE END 3 */
 }
 
@@ -177,7 +233,7 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOB, LD1_Pin|LD3_Pin|LD2_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LED_ON_GPIO_Port, LED_ON_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(BRB_LED_GPIO_Port, BRB_LED_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(USB_PowerSwitchOn_GPIO_Port, USB_PowerSwitchOn_Pin, GPIO_PIN_RESET);
@@ -227,12 +283,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Alternate = GPIO_AF7_USART3;
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : LED_ON_Pin */
-  GPIO_InitStruct.Pin = LED_ON_Pin;
+  /*Configure GPIO pin : BRB_LED_Pin */
+  GPIO_InitStruct.Pin = BRB_LED_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(LED_ON_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(BRB_LED_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : USB_PowerSwitchOn_Pin */
   GPIO_InitStruct.Pin = USB_PowerSwitchOn_Pin;
@@ -288,11 +344,10 @@ static void MX_GPIO_Init(void)
 void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
-  /* User can add his own implementation to report the HAL error return state */
-  __disable_irq();
-  while (1)
-  {
-  }
+	/* User can add his own implementation to report the HAL error return state */
+	__disable_irq();
+	while (1) {
+	}
   /* USER CODE END Error_Handler_Debug */
 }
 

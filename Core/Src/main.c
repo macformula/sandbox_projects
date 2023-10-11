@@ -72,7 +72,7 @@ void Set_LED_States(uint16_t BRB_LED_State, uint16_t LD1_State, uint16_t LD2_Sta
 		HAL_GPIO_TogglePin(BRB_LED_GPIO_Port, BRB_LED_Pin);
 		pinStates.BRB_LED_State = !pinStates.BRB_LED_State; //reflect change in data to keep track
 	}
-	if (LD1_State != pinStates.LD1_State){
+	if (LD1_State != pinStates.LD1_State){ //etc...
 		HAL_GPIO_TogglePin(LD1_GPIO_Port, LD1_Pin);
 		pinStates.LD1_State = !pinStates.LD1_State;
 	}
@@ -96,7 +96,7 @@ void Initialize_Mode(){
 		Set_LED_States(0, 1, 1, 1);
 		break;
 	case MODE3:
-		mode3Timer = 0;
+		mode3Timer = 0; //Reset timer when starting MODE3
 	case MODE4:
 	default:
 		Set_LED_States(0, 0, 0, 0);
@@ -148,7 +148,7 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-	Initialize_Mode();
+	Initialize_Mode(); // Initialize once on program start (only for starting mode)
 	while (1) {
 		if (currentMode == MODE3) {
 			mode3Timer += 1; //Increment timer in intervals of 100ms

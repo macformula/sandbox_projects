@@ -1,7 +1,0 @@
-../Core/Src/main.c:70:6:Set_LED_States	24	static
-../Core/Src/main.c:89:6:Initialize_Mode	8	static
-../Core/Src/main.c:107:6:HAL_GPIO_EXTI_Callback	16	static
-../Core/Src/main.c:121:5:main	8	static
-../Core/Src/main.c:176:6:SystemClock_Config	88	static
-../Core/Src/main.c:218:13:MX_GPIO_Init	56	static
-../Core/Src/main.c:344:6:Error_Handler	4	static,ignoring_inline_asm

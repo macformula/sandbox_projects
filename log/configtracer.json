@@ -2,5 +2,8 @@
   "level": "debug",
   "outputPaths": ["log.asc"],
   "errorOutputPaths": ["stderr"],
-  "encoding": "json"
+  "encoding": "json",
+  "encoderConfig": {
+    "timeKey": "t"
+  }
 }

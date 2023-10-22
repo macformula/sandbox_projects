@@ -45,7 +45,10 @@ func main() {
 	cfg_tracer.EncoderConfig.EncodeDuration = zapcore.SecondsDurationEncoder
 	cfg_tracer.EncoderConfig.EncodeCaller = zapcore.FullCallerEncoder
 
+	cfg_logger.EncoderConfig.EncodeLevel = zapcore.LowercaseLevelEncoder
 	cfg_logger.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
+	cfg_logger.EncoderConfig.EncodeDuration = zapcore.SecondsDurationEncoder
+	cfg_logger.EncoderConfig.EncodeCaller = zapcore.FullCallerEncoder
     
     // cfg.OutputPaths = []string{"app.log"}
 	zap_tracer := zap.Must(cfg_tracer.Build())

@@ -1,11 +1,9 @@
-package cantracer
+package canlogger
 
 import (
 	"context"
 	"fmt"
 	"time"
-	"strings"
-	"strconv"
 
 	"go.einride.tech/can/pkg/candevice"
 	"go.einride.tech/can/pkg/socketcan"
@@ -47,7 +45,7 @@ type Tracer struct {
 
 func NewTracer(samplePeriod time.Duration, l *zap.Logger, canInterface string) *Tracer {
 	return &Tracer{
-		l:            l.Named("can_tracer"),
+		l:            l.Named("can_logger"),
 		samplePeriod: samplePeriod,
 		canInterface: canInterface,
 	}
@@ -91,35 +89,10 @@ func (t *Tracer) trace(ctx context.Context) {
 		default:
 		}
 		// tracer logic here
+		// TODO: tbd, parse signals and add filtering
 
 		// t.l.Info("Tracing", zap.Int("i", i))
-
-		// Create a builder for efficient string concatenation
-    var builder strings.Builder
-
-		// add time
-		builder.WriteString(time.Now().GoString())
-
-		// add can
-		builder.WriteString(" "+strings.TrimPrefix(t.canInterface, "can"))
-
-		// add frame id
-		builder.WriteString(" "+strconv.FormatUint(uint64(frame.ID), 10))
-
-		// add Rx
-		builder.WriteString(" Rx")
-
-		// add byte length
-		builder.WriteString(" "+strconv.FormatUint(uint64(frame.Length), 10))
-
-		// add frame data
-    for i, v := range frame.Data {
-			builder.WriteString(" "+strconv.FormatUint(uint64(v), 16))
-    }
-
-    result := builder.String()
-
-		t.l.Info(result)
+		t.l.Info("200", zap.Any("can_id", frame.ID), zap.Any("can_length", frame.Length), zap.Any("can_data", frame.Data), zap.Intp("step", &i))
 
 		i += 1
 	}

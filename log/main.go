@@ -52,11 +52,11 @@ func main() {
     
     // cfg.OutputPaths = []string{"app.log"}
 	zap_tracer := zap.Must(cfg_tracer.Build())
-	zap_logger := zap.Must(cfg_logger.Build())
+	// zap_logger := zap.Must(cfg_logger.Build())
   // logger = logger.Named("can_tracer")
 
 	tracer := cantracer.NewTracer(_tracerPeriod, zap_tracer, "can0")
-	logger := canlogger.NewTracer(_tracerPeriod, zap_logger, "can0")
+	// logger := canlogger.NewTracer(_tracerPeriod, zap_logger, "can0")
 
 	// ctx, cancel := context.WithTimeout(context.Background(), 5*time.Millisecond)
 	// defer cancel()
@@ -83,7 +83,7 @@ func main() {
 
 	// Stop tracing
 	tracer.StopTrace()
-	logger.StopTrace()
+	// logger.StopTrace()
 
 	// Add delay to see all logs
 	time.Sleep(1 * time.Second)

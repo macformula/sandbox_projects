@@ -22,7 +22,7 @@ const (
 
 func main() {
 	fmt.Println("Starting program")
-	rawJSON, err := os.ReadFile("config.json")
+	rawJSON, err := os.ReadFile("configtracer.json")
 	if err != nil {
 		panic(err)
 	}
@@ -31,7 +31,7 @@ func main() {
 		panic(err)
 	}
 
-	rawJSON, err = os.ReadFile("config.json")
+	rawJSON, err = os.ReadFile("configlogger.json")
 	if err != nil {
 		panic(err)
 	}

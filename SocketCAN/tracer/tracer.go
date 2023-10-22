@@ -30,6 +30,7 @@ func Trace() {
 
 		log.Println(result)
 		fmt.Println(result)
+		fmt.Println(frame)
 	}
 
 	if rx.Err() != nil {

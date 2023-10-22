@@ -67,7 +67,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	err = logger.StartTrace(ctx)
+	// err = logger.StartTrace(ctx)
 	if err != nil {
 		panic(err)
 	}

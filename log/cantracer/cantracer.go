@@ -113,7 +113,7 @@ func (t *Tracer) trace(ctx context.Context) {
 		builder.WriteString(" "+strconv.FormatUint(uint64(frame.Length), 10))
 
 		// add frame data
-    for i, v := range frame.Data {
+    for _, v := range frame.Data {
 			builder.WriteString(" "+strconv.FormatUint(uint64(v), 16))
     }
 

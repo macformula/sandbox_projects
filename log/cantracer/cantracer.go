@@ -98,7 +98,7 @@ func (t *Tracer) trace(ctx context.Context) {
     var builder strings.Builder
 
 		// add time
-		builder.WriteString(time.Now().GoString())
+		builder.WriteString(time.Now().Format("15:04:05.0000"))
 
 		// add can
 		builder.WriteString(" "+strings.TrimPrefix(t.canInterface, "can"))

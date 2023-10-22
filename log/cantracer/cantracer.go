@@ -118,7 +118,7 @@ func (t *Tracer) trace(ctx context.Context) {
     }
 
     result := builder.String()
-
+		fmt.Println(result)
 		t.l.Info(result)
 
 		i += 1

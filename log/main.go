@@ -9,7 +9,7 @@ import (
 	"go.uber.org/zap"
 
 	"can/logger/cantracer"
-	"can/logger/canlogger"
+	// "can/logger/canlogger"
 	"time"
 
 	"go.uber.org/zap/zapcore"

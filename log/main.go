@@ -52,7 +52,10 @@ func main() {
 	}
 
 	// Do other stuff here
-	time.Sleep(_sleepTime)
+	// time.Sleep(_sleepTime)
+	var input string
+	fmt.Print("Enter something: ")
+  _, err = fmt.Scanln(&input)
 
 	// Stop tracing
 	t.StopTrace()

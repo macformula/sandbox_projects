@@ -26,8 +26,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	var cfg zap.Config
-	if err := json.Unmarshal(rawJSON, &cfg); err != nil {
+	var cfg_tracer zap.Config
+	if err := json.Unmarshal(rawJSON, &cfg_tracer); err != nil {
 		panic(err)
 	}
 
@@ -40,13 +40,13 @@ func main() {
 		panic(err)
 	}
 
-  cfg.EncoderConfig.EncodeLevel = zapcore.LowercaseLevelEncoder
-	cfg.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
-	cfg.EncoderConfig.EncodeDuration = zapcore.SecondsDurationEncoder
-	cfg.EncoderConfig.EncodeCaller = zapcore.FullCallerEncoder
+  cfg_tracer.EncoderConfig.EncodeLevel = zapcore.LowercaseLevelEncoder
+	cfg_tracer.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
+	cfg_tracer.EncoderConfig.EncodeDuration = zapcore.SecondsDurationEncoder
+	cfg_tracer.EncoderConfig.EncodeCaller = zapcore.FullCallerEncoder
     
     // cfg.OutputPaths = []string{"app.log"}
-	zap_tracer := zap.Must(cfg.Build())
+	zap_tracer := zap.Must(cfg_tracer.Build())
 	zap_logger := zap.Must(cfg_logger.Build())
   // logger = logger.Named("can_tracer")
 
@@ -59,6 +59,9 @@ func main() {
 
 	// Start tracing
 	err = tracer.StartTrace(ctx)
+	if err != nil {
+		panic(err)
+	}
 	err = logger.StartTrace(ctx)
 	if err != nil {
 		panic(err)
@@ -69,6 +72,9 @@ func main() {
 	var input string
 	fmt.Print("Enter something: ")
   _, err = fmt.Scanln(&input)
+	if err != nil {
+		panic(err)
+	}
 
 	// Stop tracing
 	tracer.StopTrace()

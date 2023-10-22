@@ -52,7 +52,7 @@ func main() {
     
     // cfg.OutputPaths = []string{"app.log"}
 	zap_tracer := zap.Must(cfg_tracer.Build())
-	zap_logger := zap.Must(cfg_logger.Build()) // nolint:golint
+	// zap_logger := zap.Must(cfg_logger.Build())
   // logger = logger.Named("can_tracer")
 
 	tracer := cantracer.NewTracer(_tracerPeriod, zap_tracer, "can0")

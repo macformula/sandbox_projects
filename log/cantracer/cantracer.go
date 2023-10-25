@@ -6,6 +6,7 @@ import (
 	"time"
 	"strings"
 	"strconv"
+	"os"
 
 	"go.einride.tech/can/pkg/candevice"
 	"go.einride.tech/can/pkg/socketcan"
@@ -75,6 +76,11 @@ func (t *Tracer) StopTrace() {
 func (t *Tracer) trace(ctx context.Context) {
 	// ticker := time.NewTicker(t.samplePeriod)
 	// defer ticker.Stop()
+	f, err := os.OpenFile("test.asc", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		panic(err)
+	}
+	defer f.Close()
 
 	i := 1 // just for printing, remove me
 	for t.can.rx.Receive() {
@@ -119,6 +125,10 @@ func (t *Tracer) trace(ctx context.Context) {
 
     result := builder.String()
 		// fmt.Println(result)
+		_, err = f.WriteString(result + "\n")
+		if err != nil {
+			f.WriteString("errored\n")
+		}
 		t.l.Info(result)
 
 		i += 1

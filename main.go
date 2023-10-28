@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"go.einride.tech/can/pkg/candevice"
 	"go.einride.tech/can/pkg/socketcan"
 	"net"
 	"os"
@@ -38,12 +37,7 @@ func main() {
 	}
 	defer l2.Close()
 
-	client, _ := candevice.New(can0)
-	_ = client.SetBitrate(500000)
-	_ = client.SetUp()
-	defer client.SetDown()
-
-	conn, err := socketcan.DialContext(ctx, "can", can0)
+	conn, err := socketcan.DialContext(context.Background(), "can", can0)
 	if err != nil {
 		panic(err)
 	}

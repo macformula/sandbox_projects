@@ -9,8 +9,8 @@ import (
 )
 
 const (
-	log1 = "log1.asc"
-	log2 = "log2.asc"
+	log1 = "log1.txt"
+	log2 = "log2.txt"
 	can0 = "can0"
 )
 
@@ -23,7 +23,7 @@ type Receiver struct {
 func main() {
 	var l1, l2 *os.File
 	var err error
-	var ctx context.Context
+	var ctx context.Context = context.Background()
 
 	l1, err = os.Create(log1)
 	if err != nil {
@@ -37,20 +37,25 @@ func main() {
 	}
 	defer l2.Close()
 
-	conn, err := socketcan.DialContext(context.Background(), "can", can0)
+	conn1, err := socketcan.DialContext(ctx, "can", can0)
+	if err != nil {
+		panic(err)
+	}
+
+	conn2, err := socketcan.DialContext(ctx, "can", can0)
 	if err != nil {
 		panic(err)
 	}
 
 	var receive1 Receiver = Receiver{
 		file:     l1,
-		receiver: getReceiver(conn, ctx),
+		receiver: getReceiver(conn1, ctx),
 		ctx:      ctx,
 	}
 
 	var receive2 Receiver = Receiver{
 		file:     l2,
-		receiver: getReceiver(conn, ctx),
+		receiver: getReceiver(conn2, ctx),
 		ctx:      ctx,
 	}
 

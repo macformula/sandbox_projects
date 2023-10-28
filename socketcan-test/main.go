@@ -25,7 +25,7 @@ type Receiver struct {
 func main() {
 	var l1, l2 *os.File
 	var err error
-	var ctx context.Context = context.Background()
+	ctx := context.Background()
 
 	l1, err = os.Create(log1)
 	if err != nil {
@@ -85,20 +85,10 @@ func (r *Receiver) receive() {
 			var builder strings.Builder
 
 			builder.WriteString(time.Now().Format("15:04:05.0000"))
-
-			// add can
-			builder.WriteString(" " + strings.TrimPrefix(t.canInterface, "can"))
-
-			// add frame id
 			builder.WriteString(" " + strconv.FormatUint(uint64(frame.ID), 10))
-
-			// add Rx
 			builder.WriteString(" Rx")
-
-			// add byte length
 			builder.WriteString(" " + strconv.FormatUint(uint64(frame.Length), 10))
 
-			// add frame data
 			for _, v := range frame.Data {
 				builder.WriteString(" " + strconv.FormatUint(uint64(v), 16))
 			}

@@ -5,6 +5,8 @@ import (
 	"go.einride.tech/can/pkg/socketcan"
 	"net"
 	"os"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -80,7 +82,28 @@ func (r *Receiver) receive() {
 		if r.receiver.Receive() {
 			frame := r.receiver.Frame()
 
-			r.file.Write(frame.Data[:])
+			var builder strings.Builder
+
+			builder.WriteString(time.Now().Format("15:04:05.0000"))
+
+			// add can
+			builder.WriteString(" " + strings.TrimPrefix(t.canInterface, "can"))
+
+			// add frame id
+			builder.WriteString(" " + strconv.FormatUint(uint64(frame.ID), 10))
+
+			// add Rx
+			builder.WriteString(" Rx")
+
+			// add byte length
+			builder.WriteString(" " + strconv.FormatUint(uint64(frame.Length), 10))
+
+			// add frame data
+			for _, v := range frame.Data {
+				builder.WriteString(" " + strconv.FormatUint(uint64(v), 16))
+			}
+
+			r.file.WriteString(builder.String())
 		}
 	}
 }

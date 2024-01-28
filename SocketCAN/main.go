@@ -25,7 +25,8 @@ func main() {
 		sender.Send()
 	case "receiver":
 		setup()
-		receiver.Receive()
+		go receiver.Receive("Receiver 1")
+		go receiver.Receive("Receiver 2")
 	case "tracer":
 		setup()
 		tracer.Trace()

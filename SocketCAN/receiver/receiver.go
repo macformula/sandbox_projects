@@ -9,7 +9,7 @@ import (
 	CANBMScan "github.com/macformula/sandbox_projects/output/CANBMScan"
 )
 
-func Receive() {
+func Receive(name string) {
 	conn, err := socketcan.DialContext(context.Background(), "can", "can0")
 	if err != nil {
 			panic(err)
@@ -28,6 +28,7 @@ func Receive() {
 		// fmt.Println(frame.String())
 
 		// Check signal and unmarshal
+		fmt.Println(name)
 		switch frame.ID {
 		case CANBMScan.Messages().Pack_SOC.ID:
 			if err := Pack_SOC.UnmarshalFrame(frame); err != nil {

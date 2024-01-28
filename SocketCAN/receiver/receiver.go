@@ -9,7 +9,7 @@ import (
 	CANBMScan "github.com/macformula/sandbox_projects/output/CANBMScan"
 )
 
-func Receive(name string) {
+func Receive(name string, done chan struct{}) {
 	conn, err := socketcan.DialContext(context.Background(), "can", "can0")
 	if err != nil {
 			panic(err)
@@ -84,4 +84,5 @@ func Receive(name string) {
 	if rx.Err() != nil {
 			panic(err)
 	}
+	done <- struct{}{}
 }

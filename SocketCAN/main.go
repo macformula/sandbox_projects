@@ -19,14 +19,17 @@ func main() {
 	}
 
 	action := os.Args[1]
+	done := make(chan struct{})
 	switch action {
 	case "sender":
 		setup()
 		sender.Send()
 	case "receiver":
 		setup()
-		go receiver.Receive("Receiver 1")
-		go receiver.Receive("Receiver 2")
+		go receiver.Receive("Receiver 1", done)
+		go receiver.Receive("Receiver 2", done)
+		<- done
+		<- done
 	case "tracer":
 		setup()
 		tracer.Trace()

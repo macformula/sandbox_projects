@@ -12,7 +12,7 @@ func Send() {
 	// auxMsg := etruckcan.NewAuxiliary().SetHeadLights(etruckcan.Auxiliary_HeadLights_LowBeam)
 	// frame := auxMsg.Frame()
 
-	conn, err := socketcan.DialContext(context.Background(), "can", "vcan0")
+	conn, err := socketcan.DialContext(context.Background(), "can", "can0")
 	if err != nil {
 		panic(err)
 	}

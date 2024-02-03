@@ -76,7 +76,7 @@ func Simulate() {
 
 	scanner := bufio.NewScanner(file)
 
-	conn, err := socketcan.DialContext(context.Background(), "can", "vcan0")
+	conn, err := socketcan.DialContext(context.Background(), "can", "can0")
 	if err != nil {
 		fmt.Printf("here1: %v\n", err)
 		panic(err)

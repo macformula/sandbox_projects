@@ -10,7 +10,7 @@ import (
 )
 
 func Receive(name string, done chan struct{}) {
-	conn, err := socketcan.DialContext(context.Background(), "can", "vcan0")
+	conn, err := socketcan.DialContext(context.Background(), "can", "can0")
 	if err != nil {
 		panic(err)
 	}

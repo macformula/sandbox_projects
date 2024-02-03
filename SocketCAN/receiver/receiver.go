@@ -4,15 +4,15 @@ import (
 	"context"
 	"fmt"
 
-	"go.einride.tech/can/pkg/socketcan"
 	CANAMKInvertercan "github.com/macformula/sandbox_projects/output/CANAMKInvertercan"
 	CANBMScan "github.com/macformula/sandbox_projects/output/CANBMScan"
+	"go.einride.tech/can/pkg/socketcan"
 )
 
 func Receive(name string, done chan struct{}) {
-	conn, err := socketcan.DialContext(context.Background(), "can", "can0")
+	conn, err := socketcan.DialContext(context.Background(), "can", "vcan0")
 	if err != nil {
-			panic(err)
+		panic(err)
 	}
 
 	// Messages
@@ -21,7 +21,7 @@ func Receive(name string, done chan struct{}) {
 	Pack_SOC := CANBMScan.NewPack_SOC()
 	Pack_State := CANBMScan.NewPack_State()
 	Contactor_Feedback := CANBMScan.NewContactor_Feedback()
-	
+
 	rx := socketcan.NewReceiver(conn)
 	for rx.Receive() {
 		frame := rx.Frame()
@@ -82,7 +82,7 @@ func Receive(name string, done chan struct{}) {
 		}
 	}
 	if rx.Err() != nil {
-			panic(err)
+		panic(err)
 	}
 	done <- struct{}{}
 }

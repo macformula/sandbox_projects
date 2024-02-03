@@ -6,8 +6,8 @@ import (
 
 	"github.com/macformula/sandbox_projects/receiver"
 	"github.com/macformula/sandbox_projects/sender"
-	"github.com/macformula/sandbox_projects/tracer"
 	"github.com/macformula/sandbox_projects/simulator"
+	"github.com/macformula/sandbox_projects/tracer"
 	"go.einride.tech/can/pkg/candevice"
 )
 
@@ -28,8 +28,8 @@ func main() {
 		setup()
 		go receiver.Receive("Receiver 1", done)
 		go receiver.Receive("Receiver 2", done)
-		<- done
-		<- done
+		<-done
+		<-done
 	case "tracer":
 		setup()
 		tracer.Trace()
@@ -43,7 +43,7 @@ func main() {
 
 func setup() {
 	fmt.Println("Setting up can0")
-	d, _ := candevice.New("can0")
+	d, _ := candevice.New("vcan0")
 	_ = d.SetBitrate(250000)
 	_ = d.SetUp()
 	defer d.SetDown()

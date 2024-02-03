@@ -12,7 +12,7 @@ func Send() {
 	// auxMsg := etruckcan.NewAuxiliary().SetHeadLights(etruckcan.Auxiliary_HeadLights_LowBeam)
 	// frame := auxMsg.Frame()
 
-	conn, err := socketcan.DialContext(context.Background(), "can", "can0")
+	conn, err := socketcan.DialContext(context.Background(), "can", "vcan0")
 	if err != nil {
 		panic(err)
 	}
@@ -22,7 +22,6 @@ func Send() {
 	// packMsg2 := CANBMScan.NewContactor_Feedback().SetPack_Negative_Feedback(false)
 	// frame2 := packMsg2.Frame()
 	// Gives me the signal: CANBMScan.NewContactor_Feedback().Pack_Negative_Feedback()
-
 
 	var frames []can.Frame
 
@@ -49,8 +48,7 @@ func Send() {
 	// 	Length: 1,
 	// 	Data:   can.Data{0b111},
 	// }
-	
-	
+
 	// if err := tx.TransmitFrame(context.Background(), frame1); err != nil {
 	// 	panic(err)
 	// }

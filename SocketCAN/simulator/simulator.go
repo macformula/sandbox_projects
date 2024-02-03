@@ -1,10 +1,10 @@
 package simulator
 
 import (
-	"context"
-	"os"
-	"fmt"
 	"bufio"
+	"context"
+	"fmt"
+	"os"
 	"strconv"
 	"strings"
 	// "time"
@@ -44,7 +44,9 @@ func parseCANFrameInfo(str string) (can.Frame, error) {
 	dataStr = strings.TrimSuffix(dataStr, "]")
 	dataBytes := strings.Split(dataStr, " ")
 	for i, byteStr := range dataBytes {
-		if uint8(i) == length {break}
+		if uint8(i) == length {
+			break
+		}
 
 		byteVal, err := strconv.ParseUint(byteStr, 10, 8)
 		if err != nil {
@@ -63,7 +65,6 @@ func parseCANFrameInfo(str string) (can.Frame, error) {
 	}, nil
 }
 
-
 func Simulate() {
 	filePath := "can.log" // Path to the log file
 
@@ -75,7 +76,7 @@ func Simulate() {
 
 	scanner := bufio.NewScanner(file)
 
-	conn, err := socketcan.DialContext(context.Background(), "can", "can0")
+	conn, err := socketcan.DialContext(context.Background(), "can", "vcan0")
 	if err != nil {
 		fmt.Printf("here1: %v\n", err)
 		panic(err)
@@ -90,7 +91,7 @@ func Simulate() {
 			fmt.Println(frame)
 			panic(err)
 		}
-	
+
 		if err := tx.TransmitFrame(context.Background(), frame); err != nil {
 			fmt.Printf("here3: %v\n", err)
 			fmt.Println(frame)

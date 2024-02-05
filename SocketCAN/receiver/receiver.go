@@ -33,6 +33,7 @@ func Receive(name string, done chan struct{}) {
 
 		// Check signal and unmarshal
 		fmt.Println(message)
+		fmt.Println("HERE")
 		//switch frame.ID {
 		//case CANBMScan.Messages().Pack_SOC.ID:
 		//	if err := Pack_SOC.UnmarshalFrame(frame); err != nil {

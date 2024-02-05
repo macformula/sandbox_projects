@@ -2,6 +2,7 @@ package sender
 
 import (
 	"context"
+	"github.com/macformula/sandbox_projects/output/CANBMScan"
 
 	// CANBMScan "github.com/macformula/sandbox_projects/output/CANBMScan"
 	"go.einride.tech/can"
@@ -17,8 +18,8 @@ func Send() {
 		panic(err)
 	}
 
-	// packMsg1 := CANBMScan.NewContactor_Feedback().SetPack_Negative_Feedback(true)
-	// frame1 := packMsg1.Frame()
+	packMsg1 := CANBMScan.NewContactor_Feedback().SetPack_Negative_Feedback(true)
+	frame1 := packMsg1.Frame()
 	// packMsg2 := CANBMScan.NewContactor_Feedback().SetPack_Negative_Feedback(false)
 	// frame2 := packMsg2.Frame()
 	// Gives me the signal: CANBMScan.NewContactor_Feedback().Pack_Negative_Feedback()
@@ -27,11 +28,12 @@ func Send() {
 
 	for i := 0; i <= 7; i++ {
 		// Create a new can.Frame for each iteration with the appropriate binary representation
-		frame := can.Frame{
-			ID:     1574,
-			Length: 1,
-			Data:   can.Data{byte(i)},
-		}
+		//frame := can.Frame{
+		//	ID:     1574,
+		//	Length: 1,
+		//	Data:   can.Data{byte(i)},
+		//}
+		frame := frame1
 		frames = append(frames, frame)
 	}
 

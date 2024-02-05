@@ -3,8 +3,8 @@ package receiver
 import (
 	"context"
 	"fmt"
+	"github.com/macformula/sandbox_projects/output/CANBMScan"
 
-	CANAMKInvertercan "github.com/macformula/sandbox_projects/output/CANAMKInvertercan"
 	"go.einride.tech/can/pkg/socketcan"
 )
 
@@ -21,9 +21,11 @@ func Receive(name string, done chan struct{}) {
 	//Pack_State := CANBMScan.NewPack_State()
 	//Contactor_Feedback := CANBMScan.NewContactor_Feedback()
 
-	i := CANAMKInvertercan.Messages()
+	i := CANBMScan.Messages()
+
 	rx := socketcan.NewReceiver(conn)
 	for rx.Receive() {
+		fmt.Println("HERE")
 		frame := rx.Frame()
 		// fmt.Println(frame.String())
 		message, err := i.UnmarshalFrame(frame)
@@ -33,7 +35,6 @@ func Receive(name string, done chan struct{}) {
 
 		// Check signal and unmarshal
 		fmt.Println(message)
-		fmt.Println("HERE")
 		//switch frame.ID {
 		//case CANBMScan.Messages().Pack_SOC.ID:
 		//	if err := Pack_SOC.UnmarshalFrame(frame); err != nil {

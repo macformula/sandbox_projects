@@ -16,6 +16,10 @@ local.properties
 .settings
 [Rr]elease
 [Dd]ebug
+.idea
+
+# Log files
+*.asc
 
 # External tool builders
 .externalToolBuilders/

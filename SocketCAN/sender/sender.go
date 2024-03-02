@@ -27,7 +27,7 @@ func Send() {
 
 	var frames []can.Frame
 
-	for i := 0; i <= 30; i++ {
+	for i := 0; i <= 200; i++ {
 		// Create a new can.Frame for each iteration with the appropriate binary representation
 		frame := can.Frame{
 			ID:     1600,
@@ -35,7 +35,7 @@ func Send() {
 			Data:   can.Data{byte(i)},
 		}
 		frames = append(frames, frame)
-		time.Sleep(200 * time.Millisecond)
+
 	}
 
 	tx := socketcan.NewTransmitter(conn)
@@ -44,6 +44,7 @@ func Send() {
 		if err := tx.TransmitFrame(context.Background(), frame); err != nil {
 			panic(err)
 		}
+		time.Sleep(200 * time.Millisecond)
 	}
 
 	// frame := can.Frame{

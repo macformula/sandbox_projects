@@ -2,6 +2,8 @@ package sender
 
 import (
 	"context"
+	"github.com/macformula/sandbox_projects/output/CANBMScan"
+	"time"
 
 	// CANBMScan "github.com/macformula/sandbox_projects/output/CANBMScan"
 	"go.einride.tech/can"
@@ -17,23 +19,23 @@ func Send() {
 		panic(err)
 	}
 
-	// packMsg1 := CANBMScan.NewContactor_Feedback().SetPack_Negative_Feedback(true)
-	// frame1 := packMsg1.Frame()
+	packMsg1 := CANBMScan.NewContactor_Feedback().SetPack_Negative_Feedback(true)
+	frame1 := packMsg1.Frame()
 	// packMsg2 := CANBMScan.NewContactor_Feedback().SetPack_Negative_Feedback(false)
 	// frame2 := packMsg2.Frame()
 	// Gives me the signal: CANBMScan.NewContactor_Feedback().Pack_Negative_Feedback()
 
-
 	var frames []can.Frame
 
-	for i := 0; i <= 7; i++ {
+	for i := 0; i <= 30; i++ {
 		// Create a new can.Frame for each iteration with the appropriate binary representation
 		frame := can.Frame{
-			ID:     1574,
+			ID:     1600,
 			Length: 1,
 			Data:   can.Data{byte(i)},
 		}
 		frames = append(frames, frame)
+		time.Sleep(200 * time.Millisecond)
 	}
 
 	tx := socketcan.NewTransmitter(conn)
@@ -49,8 +51,7 @@ func Send() {
 	// 	Length: 1,
 	// 	Data:   can.Data{0b111},
 	// }
-	
-	
+
 	// if err := tx.TransmitFrame(context.Background(), frame1); err != nil {
 	// 	panic(err)
 	// }

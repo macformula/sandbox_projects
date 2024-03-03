@@ -44,7 +44,7 @@ func Send() {
 		if err := tx.TransmitFrame(context.Background(), frame); err != nil {
 			panic(err)
 		}
-		time.Sleep(200 * time.Millisecond)
+		time.Sleep(100 * time.Millisecond)
 	}
 
 	// frame := can.Frame{

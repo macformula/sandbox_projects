@@ -2,7 +2,6 @@ package sender
 
 import (
 	"context"
-	"github.com/macformula/sandbox_projects/output/CANBMScan"
 	"time"
 
 	// CANBMScan "github.com/macformula/sandbox_projects/output/CANBMScan"
@@ -19,15 +18,15 @@ func Send() {
 		panic(err)
 	}
 
-	packMsg1 := CANBMScan.NewContactor_Feedback().SetPack_Negative_Feedback(true)
-	frame1 := packMsg1.Frame()
+	//packMsg1 := CANBMScan.NewContactor_Feedback().SetPack_Negative_Feedback(true)
+	//frame1 := packMsg1.Frame()
 	// packMsg2 := CANBMScan.NewContactor_Feedback().SetPack_Negative_Feedback(false)
 	// frame2 := packMsg2.Frame()
 	// Gives me the signal: CANBMScan.NewContactor_Feedback().Pack_Negative_Feedback()
 
 	var frames []can.Frame
 
-	for i := 0; i <= 200; i++ {
+	for i := 0; i <= 150; i++ {
 		// Create a new can.Frame for each iteration with the appropriate binary representation
 		frame := can.Frame{
 			ID:     1600,
@@ -44,7 +43,7 @@ func Send() {
 		if err := tx.TransmitFrame(context.Background(), frame); err != nil {
 			panic(err)
 		}
-		time.Sleep(100 * time.Millisecond)
+		time.Sleep(1000 * time.Millisecond)
 	}
 
 	// frame := can.Frame{

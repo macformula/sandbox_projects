@@ -27,9 +27,13 @@ func Send() {
 	var frames []can.Frame
 
 	for i := 0; i <= 150; i++ {
+		ID := 1600
+		if i%5 == 0 {
+			ID = 1650
+		}
 		// Create a new can.Frame for each iteration with the appropriate binary representation
 		frame := can.Frame{
-			ID:     1600,
+			ID:     uint32(ID),
 			Length: 1,
 			Data:   can.Data{byte(i)},
 		}
